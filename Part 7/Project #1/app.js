@@ -72,10 +72,11 @@ const userInterface = (function () {
 
 /// COMPUTE MODULE \\\
 const computeGame = (function (dataS, userI) {
-  let guess, correct, score, highscore;
+  let guess, correct, score, gameplaying;
   // Here is our initialization function
   const init = function () {
     console.log("App has started.");
+    gameplaying = true;
     dataS.data.score = 20;
     userI.updateMessage("Start guessing...");
     userI.updateNumber("?");
@@ -91,38 +92,43 @@ const computeGame = (function (dataS, userI) {
     guess = dataS.data.guess;
     correct = dataS.data.correctNumber;
     score = dataS.data.score;
-    highscore = dataS.data.highscore;
-    // Let's run the ui code and show it on the screen
-    userI.updateNumber(dataS.data.guess);
     // Let's clear the input field after each click
     userI.clearInput();
     // Here we will build logic for the game itself
-    if (!isNaN(guess)) {
-      if (guess < 1) {
+    if (gameplaying) {
+      if (!isNaN(guess)) {
+        // Let's run the ui code and show it on the screen
+        userI.updateNumber(dataS.data.guess);
+        if (guess < 1 || guess > 20) {
+          window.alert("Please input a valid number 1-20");
+          userI.updateNumber("?");
+        } else if (guess === correct) {
+          // Here we will decide to either update highscore or not
+          if (score > dataS.data.highscore) {
+            dataS.data.highscore = score;
+            userI.updateHighscore(dataS.data.highscore);
+          }
+          userI.updateMessage("🎉 Correct!");
+          gameplaying = false;
+        } else if (guess < correct) {
+          userI.updateMessage("📉 Too low!");
+          userI.updateScore((score -= 1));
+        } else if (guess > correct) {
+          userI.updateMessage("📈 Too high!");
+          userI.updateScore((score -= 1));
+        } else if (score < 1) {
+          userI.updateMessage("Out of score points!");
+        } else {
+          console.log("A wierd bug has happened");
+        }
+      } else {
         window.alert("Please input a valid number 1-20");
         userI.updateNumber("?");
-      } else if (guess === correct) {
-        // Here we will use a ternary to either update highscore or not
-        score > highscore ? userI.updateHighscore(score) : exit;
-        userI.updateMessage("🎉 Correct!");
-      } else if (guess < correct) {
-        userI.updateMessage("📉 Too low!");
-        userI.updateScore((score -= 1));
-      } else if (guess > correct) {
-        userI.updateMessage("📈 Too high!");
-        userI.updateScore((score -= 1));
-      } else if (score === 0) {
-        userI.updateMessage("Out of score points!");
-      } else {
-        console.log("A wierd bug has happened");
       }
-    } else {
-      window.alert("Please input a valid number 1-20");
-      userI.updateNumber("?");
+      dataS.data.score = score;
+
+      console.log(guess, dataS.data.correctNumber);
     }
-    dataS.data.score = score;
-    dataS.data.highscore = highscore;
-    console.log(guess, dataS.data.correctNumber);
   };
   // Here are our event listeners
   document.querySelector(".check").addEventListener("click", click);
