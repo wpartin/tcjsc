@@ -97,7 +97,7 @@ const computeGame = (function (dataS, userI) {
     // Here we will build logic for the game itself
     if (gameplaying) {
       if (!isNaN(guess)) {
-        // Let's run the ui code and show it on the screen
+        // Let's replace the ? with the guess number on the screen
         userI.updateNumber(dataS.data.guess);
         if (guess < 1 || guess > 20) {
           window.alert("Please input a valid number 1-20");
