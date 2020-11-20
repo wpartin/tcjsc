@@ -1,38 +1,5 @@
 "use strict";
 
-// score.textContent
-
-// highscore.textContent
-
-// number.textContent
-
-// btn check
-
-/*  1) get input from check button
-    2) display the input on number.textContent
-    3) perform correct task based on the input number:
-        a) correct
-            change the ui in some way to signify a win (potentially the white line)
-            display the input number in place of ?
-            display the input number in highscore
-            do not decrease score
-            stop receiving further inputs until AGAIN! is pressed (end of game)
-        b) incorrect
-            change the ui in some way to signify that the input was too high or too low
-            display the input number in place of ?
-            decrease the score
-            if score reaches 0, no more input can be received until AGAIN! is pressed (you lose)
-        c) retain highscore variable even after pressing again
-
-    data storage module
-        number, score, highscore
-    ui module
-        ui updates
-    compute module
-        handle data calculations, store data in data module
-
-*/
-
 /// DATA STORAGE MODULE \\\
 const dataStorage = (function () {
   let data;
@@ -67,6 +34,12 @@ const userInterface = (function () {
     updateHighscore: function (number) {
       document.querySelector(".highscore").textContent = number;
     },
+    updateBackgroundColor: function (color) {
+      document.querySelector("body").style.backgroundColor = color;
+    },
+    updateNumberBox: function (status) {
+      document.querySelector(".number").style.width = status;
+    },
   };
 })();
 
@@ -81,6 +54,8 @@ const computeGame = (function (dataS, userI) {
     userI.updateMessage("Start guessing...");
     userI.updateNumber("?");
     userI.updateScore(dataS.data.score);
+    userI.updateBackgroundColor("#222");
+    userI.updateNumberBox("15rem");
     dataS.data.correctNumber = Math.floor(Math.random() * 20) + 1;
     dataS.data.guess = -1;
   };
@@ -109,15 +84,20 @@ const computeGame = (function (dataS, userI) {
             userI.updateHighscore(dataS.data.highscore);
           }
           userI.updateMessage("🎉 Correct!");
+          userI.updateBackgroundColor("#60b347");
+          userI.updateNumberBox("30rem");
+          gameplaying = false;
+        } else if (score === 1 && guess !== correct) {
+          userI.updateScore((score -= 1));
+          userI.updateMessage("💥 Out of score points!");
+          userI.updateBackgroundColor("red");
           gameplaying = false;
         } else if (guess < correct) {
           userI.updateMessage("📉 Too low!");
-          userI.updateScore((score -= 1));
+          userI.updateScore(score--);
         } else if (guess > correct) {
           userI.updateMessage("📈 Too high!");
-          userI.updateScore((score -= 1));
-        } else if (score < 1) {
-          userI.updateMessage("Out of score points!");
+          userI.updateScore(score--);
         } else {
           console.log("A wierd bug has happened");
         }
