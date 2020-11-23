@@ -13,7 +13,7 @@ html {
 
 body {
   font-family: "Nunito", sans-serif;
-  font-wieght: 400;
+  font-weight: 400;
   height: 100vh;
   color: #333;
   background-image: linear-gradient(to top left, #373682 0%, #2e79bf 100%);
@@ -89,7 +89,7 @@ main {
   width: 65%;
   padding: 2rem;
   text-align: center;
-  transiton: all 0.75s;
+  transition: all 0.75s;
 }
 
 .current-label {
