@@ -5,8 +5,8 @@ const gameData = (function () {
   let data;
   data = {
     activePlayer: 0,
+    score0: 0,
     score1: 0,
-    score2: 0,
     current: 0,
     gamePlaying: false,
   };
@@ -50,15 +50,23 @@ const userInterface = (function (gameD) {
         gameD.data.activePlayer = 0;
       }
     },
-    clearCurrent: function (num) {
-      num === 0
+    clearCurrent: function (activePlayer) {
+      activePlayer === 0
         ? (document.querySelector(DOMstrings.current + "0").textContent = 0)
         : (document.querySelector(DOMstrings.current + "1").textContent = 0);
     },
-    updateScore: function (active, num) {
-      active === 0
-        ? document.querySelector((DOMstrings.score0 += num))
-        : document.querySelector((DOMstrings.score1 += num));
+    updateScore: function (activePlayer) {
+      activePlayer === 0
+        ? (document.querySelector(DOMstrings.score0).textContent =
+            gameD.data.score0)
+        : (document.querySelector(DOMstrings.score1).textContent =
+            gameD.data.score1);
+    },
+    showDice: function () {
+      document.querySelector(DOMstrings.dice).classList.remove("hidden");
+    },
+    hideDice: function () {
+      document.querySelector(DOMstrings.dice).classList.add("hidden");
     },
   };
 })(gameData);
@@ -73,6 +81,7 @@ const gameLogic = (function (gameD, userI) {
       dice = Math.floor(Math.random() * 6) + 1;
       if (gameD.data.gamePlaying) {
         if (dice !== 1) {
+          userI.showDice();
           gameD.data.current += dice;
           document.querySelector(
             userI.DOMstrings.current + gameD.data.activePlayer
@@ -88,14 +97,25 @@ const gameLogic = (function (gameD, userI) {
   document
     .querySelector(userI.DOMstrings.hold)
     .addEventListener("click", function () {
-      gameD.data.score += gameD.data.current;
-      gameD.data.current = 0;
-      userI.clearCurrent(gameD.data.activePlayer);
-      if (gameD.data.score >= 20) {
-        window.alert("Winner!");
+      if (gameD.data.activePlayer === 0) {
+        gameD.data.score0 += gameD.data.current;
+        gameD.data.current = 0;
+        userI.updateScore(gameD.data.activePlayer);
       } else {
-        userI.switchActivePlayer(gameD.data.activePlayer);
+        gameD.data.score1 += gameD.data.current;
+        gameD.data.current = 0;
+        userI.updateScore(gameD.data.activePlayer);
       }
+      userI.hideDice();
+      userI.clearCurrent(gameD.data.activePlayer);
+      userI.switchActivePlayer(gameD.data.activePlayer);
+    });
+
+  document
+    .querySelector(userI.DOMstrings.new)
+    .addEventListener("click", function () {
+      gameLogic.init();
+      userI.switchActivePlayer();
     });
 
   return {
@@ -103,7 +123,7 @@ const gameLogic = (function (gameD, userI) {
       console.log("Application is running");
       document.querySelector(userI.DOMstrings.score0).textContent = 0;
       document.querySelector(userI.DOMstrings.score1).textContent = 0;
-      document.querySelector(userI.DOMstrings.dice).classList.add("hidden");
+      userI.hideDice();
       document.querySelector(userI.DOMstrings.current + "0").textContent = 0;
       document.querySelector(userI.DOMstrings.current + "1").textContent = 0;
       gameD.data.gamePlaying = true;
