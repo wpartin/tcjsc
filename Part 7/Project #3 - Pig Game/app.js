@@ -64,7 +64,7 @@ const userInterface = (function (gameD) {
       DOMstrings.dice.classList.add("hidden");
     },
     changeDice: function (num) {
-      DOMstrings.dice.src = "dice-" + num + ".png";
+      DOMstrings.dice.src = `dice-${num}.png`;
     },
     addWinner: function (num) {
       num === 0
