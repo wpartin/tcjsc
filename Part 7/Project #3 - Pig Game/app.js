@@ -9,7 +9,7 @@ const gameData = (function () {
     score1: 0,
     current: 0,
     gamePlaying: false,
-    winningScore: 10,
+    winningScore: 50,
   };
   return {
     data,
