@@ -92,8 +92,8 @@ const gameLogic = (function (gameD, userI) {
     if (gameD.data.gamePlaying) {
       // Is our dice NOT 1
       if (dice !== 1) {
-        userI.showDice();
         userI.changeDice(dice);
+        userI.showDice();
         gameD.data.current += dice;
         // We are using the hard-coded DOM bit from userI, with the dynamic number of activePlayer
         gameD.data.activePlayer === 0
@@ -142,7 +142,6 @@ const gameLogic = (function (gameD, userI) {
   });
   // This is our New Game button functionality
   userI.DOMstrings.new.addEventListener("click", function () {
-    userI.removeWinner();
     gameLogic.init();
     userI.switchActivePlayer();
   });
