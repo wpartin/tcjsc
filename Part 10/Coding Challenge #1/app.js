@@ -1,5 +1,21 @@
 "use strict";
 
+// Closures Continued \\
+
+let f;
+
+const g = function () {
+  const a = 23;
+  const b = 2;
+  f = function () {
+    console.log(a * b);
+  };
+};
+
+g();
+f();
+
+/*
 // Closures \\ -- Not a feature that you EXPLICITLY USE -- It is implicit
 
 const secureBooking = function () {
@@ -19,7 +35,6 @@ booker();
 
 console.dir(booker);
 
-/*
 // Immediately Invoked Function Expressions (IIFE) \\
 
 const runOnce = function () {
