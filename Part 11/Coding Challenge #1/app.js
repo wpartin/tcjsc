@@ -1,98 +1,32 @@
-// LECTURES
+// Data
 
-// const currencies = new Map([
-//   ["USD", "United States dollar"],
-//   ["EUR", "Euro"],
-//   ["GBP", "Pound sterling"],
-// ]);
+const juliasData1 = [3, 5, 2, 12, 7];
+const katesData1 = [4, 1, 15, 8, 3];
 
-// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// Data 2
 
-/////////////////////////////////////////////////
-/*
-/// Slice - Doesn't change the original array!
-console.log(`Here is slice`);
-console.log(`OG Arr ------/`);
-let arr = ["a", "b", "c", "d", "e"];
-console.log(arr);
-console.log(arr.slice(2));
-console.log(arr.slice(2, 4));
-console.log(arr.slice(-2));
-console.log(arr.slice(-1));
-console.log(arr.slice(1, -2));
-console.log(arr.slice());
+const juliasData2 = [9, 16, 6, 8, 3];
+const katesData2 = [10, 5, 6, 1, 4];
 
-/// Splice - Does change the original array!
+// Function
 
-console.log(`Here is splice`);
-// console.log(arr.splice(2));
-console.log(arr);
-console.log(`OG Arr ------/`);
-arr.splice(-1);
-arr.splice(1, 2);
-console.log(arr);
-
-/// Reverse
-
-arr = ["a", "b", "c", "d", "e"];
-const arr2 = ["j", "i", "h", "g", "f"];
-console.log(arr2.reverse());
-
-/// Concat
-
-const letters = arr.concat(arr2);
-console.log(letters);
-/// Same as above, but doesn't mutate any array
-// console.log([...arr, ...arr2]);
-
-/// Join
-
-console.log(letters.join(" - "));
-
-/// Looping Arrays: foreach
-
-
-
-// Don't forget, index comes first!
-// for (const move of movements) {
-  
-  console.log(`----- FOR OF -----`);
-  
-  for (const [i, move] of movements.entries()) {
-    move > 0
-    ? console.log(`Movement ${i + 1}: You deposited $${move}.`)
-    : console.log(`Movement ${i + 1}: You withdrew $${Math.abs(move)}.`);
-  }
-  
-  console.log(`----- FOR EACH -----`);
-  
-  // Don't forget, index comes second!
-  
-  movements.forEach(function (move, index, array) {
-    move > 0
-    ? console.log(`Movement ${index + 1}: You deposited $${move}.`)
-    : console.log(`Movement ${index + 1}: You withdrew $${Math.abs(move)}.`);
+const checkDogs = function (array1, array2) {
+  // Shallow array copy (1st & last 2) for Julia; Use slice!
+  const jarray = array1.slice(1, -2);
+  // Combine Julia's & Kate's arrays
+  const combined = jarray.concat(array2);
+  // For each remaining dog, log whether it is an adult (> 3) or a puppy
+  combined.forEach(function (age, index) {
+    if (age >= 3) {
+      console.log(`Dog #${index + 1} is an adult, & is ${age} years old.`);
+    } else {
+      console.log(`Dog #${index + 1} is still a puppy. 🐶`);
+    }
   });
-  
-  
-  /// forEach with Maps & Sets
-  
-  // Map
-  const currencies = new Map([
-    ["USD", "United States dollar"],
-    ["EUR", "Euro"],
-    ["GBP", "Pound sterling"],
-  ]);
-  
-  currencies.forEach(function (value, key, map) {
-    console.log(`${key}: ${value}: ${map}`);
-  });
-  
-  // Set - No keys!  No indexes!  Signature was kept so forEach would run the same on maps, sets, arrays, etc
-  const currenciesUnique = new Set(["USD", "GBP", "USD", "EUR", "EUR"]);
-  console.log(currenciesUnique);
-  currenciesUnique.forEach(function (value, _, map) {
-    console.log(`${value}: ${value}`);
-  });
-  
-*/
+};
+
+console.log(`----- DATA 1 -----`);
+checkDogs(juliasData1, katesData1);
+
+console.log(`----- DATA 2 -----`);
+checkDogs(juliasData2, katesData2);
