@@ -1,0 +1,5 @@
+body {
+  height: 100vh;
+  display: flex;
+  background: linear-gradient(to top left, white, #7cb9e8);
+}
