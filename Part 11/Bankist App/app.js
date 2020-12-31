@@ -61,5 +61,182 @@ const inputLoanAmount = document.querySelector(".form__input--loan-amount");
 const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
+// Event Handlers
+
+let currentAccount;
+
+////// Login Button Functionality
+
+btnLogin.addEventListener("click", function (event) {
+  // Prevent form from submitting
+  event.preventDefault();
+  currentAccount = accounts.find(
+    (acc) => acc.username === inputLoginUsername.value
+  );
+
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    // Display UI & Message
+    labelWelcome.textContent = `Welcome back, ${
+      currentAccount.owner.split(" ")[0]
+    }`;
+    containerApp.style.opacity = 100;
+    // Clear Input Fields
+    inputLoginUsername.value = inputLoginPin.value = "";
+    inputLoginPin.blur();
+    updateUI(currentAccount);
+  } else {
+    containerApp.style.opacity = 0;
+    // Clear Input Fields
+    inputLoginUsername.value = inputLoginPin.value = "";
+    inputLoginPin.blur();
+    labelWelcome.textContent = "";
+    console.log("error");
+  }
+});
+
+//////  Transfer Money Functionality
+
+const moneyOut = (amount, from) => from.movements.push(amount * -1);
+const moneyIn = (amount, toWho) => toWho.movements.push(amount);
+
+btnTransfer.addEventListener("click", function (event) {
+  event.preventDefault();
+
+  const amount = Number(inputTransferAmount.value);
+  const toWho = accounts.find((acc) => acc.username === inputTransferTo.value);
+
+  inputTransferAmount.value = inputTransferTo.value = "";
+  if (toWho && toWho?.username !== currentAccount.username && amount > 0) {
+    if (currentAccount.balance >= amount) {
+      moneyOut(amount, currentAccount);
+      moneyIn(amount, toWho);
+      updateUI(currentAccount);
+    } else {
+      alert(`Not enough funds to complete transfer.`);
+    }
+  } else {
+    console.log("error");
+  }
+});
+
+//////  Request Loan functionality
+
+btnLoan.addEventListener("click", function (event) {
+  event.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+
+  if (
+    amount > 0 &&
+    currentAccount.movements.some((move) => move >= amount * 0.1)
+  ) {
+    currentAccount.movements.push(amount);
+    updateUI(currentAccount);
+  }
+  inputLoanAmount = "";
+});
+
+//////  Close an Account Functionality
+
+btnClose.addEventListener("click", function (event) {
+  event.preventDefault();
+
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    const index = accounts.findIndex(
+      (acc) => acc.username === currentAccount.username
+    );
+    accounts.splice(index, 1);
+
+    containerApp.style.opacity = 0;
+  }
+  inputLoginUsername.value = inputLoginPin.value = "";
+  labelWelcome.textContent = `Log in to get started`;
+});
+
+////// Sort Button Functionality
+
+let sorted = false;
+
+btnSort.addEventListener("click", function (event) {
+  event.preventDefault();
+
+  displayMovements(currentAccount, !sorted);
+  sorted = !sorted;
+});
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
+
+const updateUI = function (account) {
+  displayMovements(account);
+  calcDisplayBalance(account);
+  calcDisplaySummary(account);
+};
+
+//////  Show the movements on the UI
+
+const displayMovements = function (account, sort = false) {
+  containerMovements.innerHTML = "";
+
+  const movements = sort
+    ? account.movements.slice().sort((curr, next) => curr - next)
+    : account.movements;
+
+  movements.forEach(function (move, index) {
+    const type = move > 0 ? "deposit" : "withdrawal";
+
+    const html = `
+    <div class="movements__row">
+    <div class="movements__type movements__type--${type}">${
+      index + 1
+    } ${type}</div>
+    <div class="movements__value">${move}€</div>
+    </div>`;
+
+    containerMovements.insertAdjacentHTML("afterbegin", html);
+  });
+};
+
+//////  Calculate the balance & display it
+
+const calcDisplayBalance = function (account) {
+  account.balance = account.movements.reduce((acc, curr) => (acc += curr), 0);
+  labelBalance.textContent = `${account.balance}€`;
+};
+
+//////  Calculate the summary at the bottom & display it
+
+const calcDisplaySummary = function (account) {
+  const incomes = account.movements
+    .filter((move) => move > 0)
+    .reduce((acc, curr) => acc + curr, 0);
+  labelSumIn.textContent = `${incomes}€`;
+  const out = account.movements
+    .filter((move) => move < 0)
+    .reduce((acc, curr) => (acc += curr), 0);
+  labelSumOut.textContent = `${Math.abs(out)}€`;
+
+  const interest = account.movements
+    .filter((move) => move > 0)
+    .map((deposit) => (deposit * account.interestRate) / 100)
+    .filter((int) => int >= 1)
+    .reduce((acc, curr) => (acc += curr), 0);
+  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
+};
+
+//////  We need to create our usernames dynamically, and run this first so that the
+//////  login functionality works!
+
+const createUserNames = function (accounts) {
+  accounts.forEach(function (account) {
+    account.username = account.owner
+      .toLowerCase()
+      .split(" ")
+      .map((current) => current[0])
+      .join("");
+  });
+};
+
+createUserNames(accounts);
