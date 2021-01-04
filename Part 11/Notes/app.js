@@ -34,24 +34,56 @@ const account4 = {
 
 const accounts = [account1, account2, account3, account4];
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+////// Fill & Array.from
+// Fill works kind of like slice
+const x = new Array(7);
+
+console.log(x);
+x.fill(1, 3);
+console.log(x);
+
+const y = Array.from({ length: 7 }, () => 1);
+console.log(y);
+
+const z = Array.from({ length: 7 }, (_, index) => index + 1);
+console.log(z);
+
+const dice = Array.from(
+  { length: 100 },
+  () => Math.floor(Math.random() * 6) + 1
+);
+console.log(dice);
+
+// Array.from is great for converting nodelists into arrays!  Like when using queryselectorall
+
+labelBalance.addEventListener("click", function () {
+  const movementsUI = Array.from(
+    document.querySelectorAll(".movements__value"),
+    (element) => Number(element.textContent.replace("€", ""))
+  );
+  console.log(movementsUI);
+});
+
+document.querySelector;
 
 ////// Sorting
-// sort() is based on strings
+// // sort() is based on strings
 
-const owners = ["Weston", "Zach", "Adam", "Martha"];
+// const owners = ["Weston", "Zach", "Adam", "Martha"];
 
-// Ascending Order
-movements.sort((curr, next) => curr - next);
-console.log(movements);
+// // Ascending Order
+// movements.sort((curr, next) => curr - next);
+// console.log(movements);
 
-// Descending Order
-movements.sort((curr, next) => next - curr);
-console.log(movements);
+// // Descending Order
+// movements.sort((curr, next) => next - curr);
+// console.log(movements);
 
-console.log(owners.sort());
+// console.log(owners.sort());
 
-////// Flat & flatMap
+// ////// Flat & flatMap
 
 // const arr = [[1, 2, 3], [4, 5, 6], 7, 8];
 

@@ -240,3 +240,17 @@ const createUserNames = function (accounts) {
 };
 
 createUserNames(accounts);
+
+labelBalance.addEventListener("click", function () {
+  const movementsUI = Array.from(
+    document.querySelectorAll(".movements__value"),
+    (element) => Number(element.textContent.replace("€", ""))
+  );
+  console.log(movementsUI);
+
+  // Can also do this with the spread operator, then call map on the resulting array
+  const movementsUI2 = [...document.querySelectorAll(".movements__value")];
+  console.log(
+    movementsUI2.map((element) => Number(element.textContent.replace("€", "")))
+  );
+});
