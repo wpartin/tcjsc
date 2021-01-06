@@ -38,35 +38,35 @@ const accounts = [account1, account2, account3, account4];
 
 ////// Fill & Array.from
 // Fill works kind of like slice
-const x = new Array(7);
+// const x = new Array(7);
 
-console.log(x);
-x.fill(1, 3);
-console.log(x);
+// console.log(x);
+// x.fill(1, 3);
+// console.log(x);
 
-const y = Array.from({ length: 7 }, () => 1);
-console.log(y);
+// const y = Array.from({ length: 7 }, () => 1);
+// console.log(y);
 
-const z = Array.from({ length: 7 }, (_, index) => index + 1);
-console.log(z);
+// const z = Array.from({ length: 7 }, (_, index) => index + 1);
+// console.log(z);
 
-const dice = Array.from(
-  { length: 100 },
-  () => Math.floor(Math.random() * 6) + 1
-);
-console.log(dice);
+// const dice = Array.from(
+//   { length: 100 },
+//   () => Math.floor(Math.random() * 6) + 1
+// );
+// console.log(dice);
 
-// Array.from is great for converting nodelists into arrays!  Like when using queryselectorall
+// // Array.from is great for converting nodelists into arrays!  Like when using queryselectorall
 
-labelBalance.addEventListener("click", function () {
-  const movementsUI = Array.from(
-    document.querySelectorAll(".movements__value"),
-    (element) => Number(element.textContent.replace("€", ""))
-  );
-  console.log(movementsUI);
-});
+// labelBalance.addEventListener("click", function () {
+//   const movementsUI = Array.from(
+//     document.querySelectorAll(".movements__value"),
+//     (element) => Number(element.textContent.replace("€", ""))
+//   );
+//   console.log(movementsUI);
+// });
 
-document.querySelector;
+// document.querySelector;
 
 ////// Sorting
 // // sort() is based on strings
