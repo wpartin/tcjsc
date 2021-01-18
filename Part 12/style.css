@@ -1,3 +1,9 @@
+/*
+ * Use this CSS to learn some intersting techniques,
+ * in case you're wondering how I built the UI.
+ * Have fun! 😁
+ */
+
 * {
   margin: 0;
   padding: 0;
@@ -77,8 +83,7 @@ nav {
   color: #777;
 }
 
-/* Main */
-
+/* MAIN */
 .app {
   position: relative;
   max-width: 100rem;
@@ -88,7 +93,7 @@ nav {
   grid-template-rows: auto repeat(3, 15rem) auto;
   gap: 2rem;
 
-  /* Note this creates the fade in out animation */
+  /* NOTE This creates the fade in/out anumation */
   opacity: 0;
   transition: all 1s;
 }
@@ -117,8 +122,7 @@ nav {
   font-weight: 400;
 }
 
-/* Movements */
-
+/* MOVEMENTS */
 .movements {
   grid-row: 2 / span 3;
   background-color: #fff;
@@ -163,8 +167,7 @@ nav {
   margin-left: auto;
 }
 
-/* Summary */
-
+/* SUMMARY */
 .summary {
   grid-row: 5 / 6;
   display: flex;
@@ -203,8 +206,7 @@ nav {
   cursor: pointer;
 }
 
-/* Operations */
-
+/* OPERATIONS */
 .operation {
   border-radius: 1rem;
   padding: 3rem 4rem;
@@ -216,7 +218,7 @@ nav {
 }
 
 .operation--loan {
-  background-image: linear-gradient(to top left, #38b385, #9b315d);
+  background-image: linear-gradient(to top left, #39b385, #9be15d);
 }
 
 .operation--close {
@@ -237,17 +239,14 @@ h2 {
   gap: 0.4rem 1rem;
 }
 
-/* Exceptions for Interest */
-
+/* Exceptions for interst */
 .form.form--loan {
   grid-template-columns: 2.5fr 1fr 2.5fr;
 }
-
 .form__label--loan {
   grid-row: 2;
 }
-
-/* End Exceptions */
+/* End exceptions */
 
 .form__input {
   width: 100%;
