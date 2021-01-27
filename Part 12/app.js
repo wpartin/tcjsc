@@ -1,5 +1,4 @@
 "use strict";
-"use strict";
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -198,9 +197,32 @@ const updateUI = function (acc) {
   calcDisplaySummary(acc);
 };
 
+const startLogOutTimer = function () {
+  const tick = function () {
+    const minutes = String(Math.trunc(time / 60)).padStart(2, 0);
+    const seconds = String(time % 60).padStart(2, 0);
+    // Stop timer @ 0 & "logout" user
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = "Log in to get started";
+      containerApp.style.opacity = 0;
+    }
+    time--;
+
+    // Print remaining time to UI
+    labelTimer.textContent = `${minutes}:${seconds}`;
+  };
+  // Set time to 5 minutes
+  let time = 300;
+  // Call the timer every second
+  const timer = setInterval(tick, 1000);
+
+  return timer;
+};
+
 ///////////////////////////////////////
 // Event handlers
-let currentAccount;
+let currentAccount, timer;
 
 // Always logged in function
 // currentAccount = account1;
@@ -252,6 +274,10 @@ btnLogin.addEventListener("click", function (e) {
 
     // labelDate.textContent = `${month}/${day}/${year}, ${hour}:${min}`;
 
+    if (timer) clearInterval(timer);
+
+    timer = startLogOutTimer();
+
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = "";
     inputLoginPin.blur();
@@ -285,6 +311,10 @@ btnTransfer.addEventListener("click", function (e) {
 
     // Update UI
     updateUI(currentAccount);
+
+    // Reset the timer
+    clearInterval(timer);
+    timer = startLogOutTimer();
   }
 });
 
@@ -297,15 +327,22 @@ btnLoan.addEventListener("click", function (e) {
     amount > 0 &&
     currentAccount.movements.some((mov) => mov >= amount * 0.1)
   ) {
-    // Add movement
-    currentAccount.movements.push(amount);
+    setTimeout(function () {
+      // Add movement
+      currentAccount.movements.push(amount);
 
-    // Add transfer date
-    currentAccount.movementsDates.push(new Date().toISOString());
+      // Add transfer date
+      currentAccount.movementsDates.push(new Date().toISOString());
 
-    // Update UI
-    updateUI(currentAccount);
-  }
+      // Update UI
+      updateUI(currentAccount);
+    }, 2500);
+  } else alert(`Cannot process loan`);
+
+  // Reset the timer
+  clearInterval(timer);
+  timer = startLogOutTimer();
+
   inputLoanAmount.value = "";
 });
 
@@ -335,7 +372,7 @@ btnClose.addEventListener("click", function (e) {
 let sorted = false;
 btnSort.addEventListener("click", function (e) {
   e.preventDefault();
-  displayMovements(currentAccount.movements, !sorted);
+  displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
 
@@ -367,10 +404,10 @@ btnSort.addEventListener("click", function (e) {
 // console.log(new Date(account1.movementsDates[0]));
 // console.log(new Date(2037, 10, 19, 15, 23, 5));
 
-const future = new Date(2037, 10, 19, 15, 23);
+// const future = new Date(2037, 10, 19, 15, 23);
 
-const calcDaysPassed = (date1, date2) =>
-  Math.round(Math.abs((date2 - date1) / (1000 * 60 * 60 * 24)));
+// const calcDaysPassed = (date1, date2) =>
+//   Math.round(Math.abs((date2 - date1) / (1000 * 60 * 60 * 24)));
 
 // console.log(calcDaysPassed(new Date(2037, 3, 14), new Date(2037, 3, 4)));
 
@@ -390,3 +427,13 @@ const calcDaysPassed = (date1, date2) =>
 
 // future.setFullYear(2040);
 // console.log(future);
+
+// const ingredients = ["olives", "spinach"];
+// const pizzaTimer = setTimeout(
+//   (ing1, ing2) => console.log(`Here is your pizza with ${ing1} & ${ing2} 🍕`),
+//   5000,
+//   ...ingredients
+// );
+// console.log(`Waiting...`);
+
+// if (ingredients.includes("spinach")) clearTimeout(pizzaTimer);
