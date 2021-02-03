@@ -154,6 +154,7 @@ const sectionObserver = new IntersectionObserver(revealSection, {
 
 allSections.forEach(function (section) {
   // section.classList.add('section--hidden');
+  // console.log(section);
   sectionObserver.observe(section);
 });
 
@@ -298,6 +299,20 @@ btnScrollTo.addEventListener('click', function (e) {
   //   // We don't even need the positioning with modern methods
   section1.scrollIntoView({ behavior: 'smooth' });
 });
+
+document.addEventListener('DOMContentLoaded', function (e) {
+  console.log('HTML parsed & DOM tree built!', e);
+});
+
+window.addEventListener('load', function (e) {
+  console.log('Page fully loaded', e);
+});
+
+// window.addEventListener('beforeunload', function (e) {
+//   e.preventDefault();
+//   console.log(e);
+//   e.returnValue = '';
+// });
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
